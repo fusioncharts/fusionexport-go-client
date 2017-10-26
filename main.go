@@ -2,11 +2,11 @@ package main
 
 import (
     "io/ioutil"
-    "./FcGoExportManager"
+    "./ExportFusion"
     "path/filepath"
 )
 
-func saveFiles(fileBag []FcGoExportManager.OutFileBag) {
+func saveFiles(fileBag []ExportFusion.OutFileBag) {
     for _, file := range fileBag {
         fileData, err := ioutil.ReadFile(file.TmpPath)
         check(err)
@@ -26,8 +26,8 @@ func main() {
       "templateFilePath":"` + templateFilePath + `"
     }`
 
-    FcGoExportManager.Connect("127.0.0.1", "1337")
-    outFileBag := FcGoExportManager.Export(exportConfig)
+    ExportFusion.Connect("127.0.0.1", "1337")
+    outFileBag := ExportFusion.Export(exportConfig)
 
     saveFiles(outFileBag)
 }

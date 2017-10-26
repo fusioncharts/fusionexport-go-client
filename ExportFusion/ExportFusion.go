@@ -1,4 +1,4 @@
-package FcGoExportManager
+package ExportFusion
 
 import (
     "net"
