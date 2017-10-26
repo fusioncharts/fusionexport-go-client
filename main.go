@@ -21,13 +21,10 @@ func main() {
     templateFilePath, err := filepath.Abs("template.html")
     check(err)
 
-    exportConfig := `{`
-    exportConfig += `"chartConfig":` + string(chartConfig) + `,`
-    exportConfig += `"exportFile": "export_<%= number(1) %>",`
-    exportConfig += `"exportAsZip": false,`
-    exportConfig += `"templateFilePath":"` + templateFilePath + `",`
-    exportConfig += `"type": "jpeg"`
-    exportConfig += `}`
+    exportConfig := `{
+      "chartConfig":` + string(chartConfig) + `,
+      "templateFilePath":"` + templateFilePath + `"
+    }`
 
     FcGoExportManager.Connect("127.0.0.1", "1337")
     outFileBag := FcGoExportManager.Export(exportConfig)
