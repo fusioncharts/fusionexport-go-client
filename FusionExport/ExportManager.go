@@ -1,4 +1,4 @@
-package ExportFusion
+package FusionExport
 
 import (
     "net"
@@ -8,14 +8,21 @@ import (
     "io"
 )
 
+
+
 type OutFileBag struct {
     RealName string `json:"realName"`
     TmpPath string `json:"tmpPath"`
 }
 
+type ExportManager struct {
+    Host string
+    Port string
+}
+
 var conn net.Conn
 
-func Connect(host, port string) {
+func connect(host, port string) {
     var err error
 
     address := host + ":" + port
@@ -23,14 +30,16 @@ func Connect(host, port string) {
     check(err)
 }
 
-func Export (exportConfig string) []OutFileBag {
+func (em *ExportManager) Export (exportConfig string, exportDone func([]OutFileBag), exportStateChanged func()) {
+    connect(em.Host, em.Port)
+
     data := emitData("ExportManager", "export", exportConfig)
 
     var outFileBagData map[string][]OutFileBag
     err := json.Unmarshal([]byte(data), &outFileBagData)
     check(err)
 
-    return outFileBagData["data"]
+    exportDone(outFileBagData["data"])
 }
 
 func emitData (target, method, body string) string {
