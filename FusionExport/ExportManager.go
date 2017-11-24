@@ -1,62 +1,33 @@
 package FusionExport
 
-import (
-    "net"
-    "fmt"
-    "bufio"
-    "encoding/json"
-    "io"
-)
-
-
-
-type OutFileBag struct {
-    RealName string `json:"realName"`
-    TmpPath string `json:"tmpPath"`
-}
-
 type ExportManager struct {
     Host string
-    Port string
+    Port int
 }
 
-var conn net.Conn
-
-func connect(host, port string) {
-    var err error
-
-    address := host + ":" + port
-    conn, err = net.Dial("tcp", address)
-    check(err)
+func NewExportManager () ExportManager {
+    em := ExportManager{
+        Host: DEFAULT_HOST,
+        Port: DEFAULT_PORT,
+    }
+    return em
 }
 
-func (em *ExportManager) Export (exportConfig string, exportDone func([]OutFileBag), exportStateChanged func()) {
-    connect(em.Host, em.Port)
-
-    data := emitData("ExportManager", "export", exportConfig)
-
-    var outFileBagData map[string][]OutFileBag
-    err := json.Unmarshal([]byte(data), &outFileBagData)
-    check(err)
-
-    exportDone(outFileBagData["data"])
+func (em *ExportManager) setConnectionConfig (host string, port int) {
+    em.Host = host
+    em.Port = port
 }
 
-func emitData (target, method, body string) string {
-    payload := target + "." + method + "<=:=>" + body
-    fmt.Fprint(conn, payload)
-
-    out, err := bufio.NewReader(conn).ReadString('\n')
-    if err != nil && err != io.EOF {
-        check(err)
+func (em *ExportManager) Export (exportConfig ExportConfig, exportDone func([]OutFileBag, error), exportStateChanged func(ExportEvent)) (Exporter, error) {
+    exp := Exporter{
+        ExportConfig: exportConfig,
+        ExportDoneListener: exportDone,
+        ExportStateChangeListener: exportStateChanged,
+        ExportServerHost: em.Host,
+        ExportServerPort: em.Port,
     }
 
-    return string(out)
-}
+    err := exp.Start()
 
-func check(err error) {
-    if err != nil {
-        fmt.Print(err)
-        panic(err)
-    }
+    return exp, err
 }
