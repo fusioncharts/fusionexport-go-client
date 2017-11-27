@@ -1,3 +1,5 @@
+// Converting an SVG image to PNG/JPEG/PDF
+
 package main
 
 import (
@@ -29,13 +31,9 @@ func onStateChange (event FusionExport.ExportEvent) {
 func main() {
     exportConfig := FusionExport.NewExportConfig()
 
-    chartConfig, err := ioutil.ReadFile("chart_config.json")
+    svg, err := filepath.Abs("vector.svg")
     check(err)
-    exportConfig.Set("chartConfig", string(chartConfig))
-
-    templateFilePath, err := filepath.Abs("template.html")
-    check(err)
-    exportConfig.Set("templateFilePath", templateFilePath)
+    exportConfig.Set("inputSVG", svg)
 
     exportManager := FusionExport.NewExportManager()
 
