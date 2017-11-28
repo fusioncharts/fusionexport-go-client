@@ -4,11 +4,10 @@ import (
     "net"
     "strconv"
     "fmt"
-    "bufio"
-    "io"
     "strings"
     "encoding/json"
     "errors"
+    "bytes"
 )
 
 type Exporter struct {
@@ -52,12 +51,13 @@ func (exp *Exporter) handleSocketConnection () error {
 
     var data string
     for {
-        out, err := bufio.NewReader(exp.tcpClient).ReadString('\n')
-        if err != nil && err != io.EOF { return err }
+        out := make([]byte, 4096)
+        count, err := exp.tcpClient.Read(out)
+        if err != nil { return err }
 
-        if len(out) < 1 { break }
+        if count < 1 { break }
 
-        data += string(out)
+        data += string(bytes.Trim(out, "\x00"))
         data = exp.processDataReceived(data)
     }
 

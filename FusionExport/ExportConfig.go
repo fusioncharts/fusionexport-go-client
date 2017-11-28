@@ -86,12 +86,13 @@ func (config *ExportConfig) GetFormattedConfigs () string {
 
 func (config *ExportConfig) getFormattedConfigValue (name, value string) string {
     switch name {
-    case "chartConfig":
-        return value
-    default:
-        return fmt.Sprintf("\"%s\"", value)
+        case "chartConfig":
+        case "asyncCapture":
+        case "exportAsZip":
+            return value
+        default:
+            return fmt.Sprintf("\"%s\"", value)
     }
+    
+    return value
 }
-
-
-
