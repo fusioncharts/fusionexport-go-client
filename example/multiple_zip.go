@@ -4,7 +4,7 @@ package main
 
 import (
     "io/ioutil"
-    "../FusionExport" // import the sdk
+    ".." // import the sdk
     "fmt"
 )
 

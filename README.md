@@ -5,7 +5,7 @@ This is a Go Export Client for FC Export Service. It communicates with Export Se
 ## Installation
 
 ```
-go get github.com/fc-export-go-client
+go get github.com/fusioncharts/fc-export-go-client
 ```
 
 ## Usage
