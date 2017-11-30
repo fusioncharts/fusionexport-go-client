@@ -1,4 +1,4 @@
-// Manipulating the output filename
+// Export in Bulk
 
 package main
 
