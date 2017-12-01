@@ -1,6 +1,6 @@
-# FusionCharts Go Export Client
+# FusionExport Go Client
 
-This is a Go Export Client for FC Export Service. It communicates with Export Service through the socket protocol and does the export.
+This is a Go Export Client for FusionExport. It communicates with FusionExport through the socket protocol and does the export.
 
 ## Installation
 
@@ -13,6 +13,12 @@ go get github.com/fusioncharts/fusionexport-go-client
 Everything is stored in the `FusionExport` package.
 
 You can use the `ExportConfig` class to build the export config for each export.
+
+Import the package
+
+```go
+import "github.com/fusioncharts/fusionexport-go-client"
+```
 
 Build a simple export config
 
@@ -37,3 +43,7 @@ func (em *ExportManager) Export (exportConfig ExportConfig, exportDone func([]Ou
 `exportDone` callback gets an array of OutFileBag which contains the temporary file and the resolved name of that file as specified in the `output-file` option of the config.
 
 `exportStateChanged` callback gets an ExportEvent which contains the state of the export on each progress event.
+
+## API Reference
+
+You can find the full reference [here](https://www.fusioncharts.com/dev/exporting-charts/using-fusionexport/sdk-api-reference/golang.html)
