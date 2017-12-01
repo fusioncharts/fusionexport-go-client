@@ -33,7 +33,7 @@ package main
 
 import (
     "io/ioutil"
-    ".." // import the sdk
+    "github.com/fusioncharts/fusionexport-go-client" // import the sdk
     "fmt"
 )
 
