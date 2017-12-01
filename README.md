@@ -1,10 +1,10 @@
 # FusionExport Go Client
 
-This is a Go Export Client for FusionExport. It communicates with FusionExport through the socket protocol and does the export.
+This is a Go export client for FusionExport. It communicates with FusionExport through the socket protocol and does the export.
 
 ## Installation
 
-To install the go package, simply use go get:
+To install the Go package, simply use Go get:
 
 ```
 go get github.com/fusioncharts/fusionexport-go-client
@@ -20,7 +20,7 @@ import "github.com/fusioncharts/fusionexport-go-client"
 
 ## API Reference
 
-You can find the full reference [here](https://www.fusioncharts.com/dev/exporting-charts/using-fusionexport/sdk-api-reference/golang.html)
+You can find the full reference [here](https://www.fusioncharts.com/dev/exporting-charts/using-fusionexport/sdk-api-reference/golang.html).
 
 ## Example
 
