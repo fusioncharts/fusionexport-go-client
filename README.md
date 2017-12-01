@@ -5,19 +5,35 @@ This is a Go Export Client for FC Export Service. It communicates with Export Se
 ## Installation
 
 ```
-go get github.com/fc-export-go-client
+go get github.com/fusioncharts/fusionexport-go-client
 ```
 
 ## Usage
 
-The `FcGoExportManager` exposes two simple interface to communicate with Export Service.
+Everything is stored in the `FusionExport` package.
 
-`Connect(host, port string)`
+You can use the `ExportConfig` class to build the export config for each export.
 
-It takes the host and port of Export Service as string and sets up the connection to it.
+Build a simple export config
 
-`Export(exportConfig string) []OutFileBag`
+```go
+exportConfig := FusionExport.NewExportConfig()
+exportConfig.Set("chartConfig", chartConfig)
+```
 
-It takes the exportConfig as a JSON string format.
+Use the `ExportManager` class to export multiple charts.
 
-It returns an array of OutFileBag which contains the temporary file and the resolved name of that file as specified in the `output-file` option of the config.
+```go
+exportManager := FusionExport.NewExportManager()
+exportManager.Export(exportConfig, onDone, onStateChange)
+```
+
+The format of the `Export` function is
+
+```go
+func (em *ExportManager) Export (exportConfig ExportConfig, exportDone func([]OutFileBag, error), exportStateChanged func(ExportEvent)) (Exporter, error)
+```
+
+`exportDone` callback gets an array of OutFileBag which contains the temporary file and the resolved name of that file as specified in the `output-file` option of the config.
+
+`exportStateChanged` callback gets an ExportEvent which contains the state of the export on each progress event.

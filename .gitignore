@@ -49,4 +49,6 @@ Temporary Items
 
 # End of https://www.gitignore.io/api/go,macos
 
-export_*.*
+.idea
+export--*.*
+fusioncharts_export.*
