@@ -6,6 +6,7 @@ import (
 	"errors"
 	"io/ioutil"
 	"reflect"
+	"runtime"
 	"strconv"
 	"strings"
 )
@@ -253,6 +254,14 @@ func (config *ExportConfig) formatConfigs() (map[string]interface{}, error) {
 	}
 
 	formattedConfigs["clientName"] = "GO"
+
+	var platform string
+	if runtime.GOOS == "windows" {
+		platform = "win32"
+	} else {
+		platform = runtime.GOOS
+	}
+	formattedConfigs["platform"] = platform
 
 	return formattedConfigs, nil
 }
