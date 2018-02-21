@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"golang.org/x/net/websocket"
+	"net"
 )
 
 type Exporter struct {
@@ -28,8 +29,8 @@ type ExportEvent struct {
 }
 
 type OutFileBag struct {
-	RealName string `json:"realName"`
-	TmpPath  string `json:"tmpPath"`
+	RealName    string `json:"realName"`
+	FileContent string `json:"fileContent"`
 }
 
 func (exp *Exporter) Start() error {
@@ -57,7 +58,10 @@ func (exp *Exporter) handleSocketConnection() error {
 		return err
 	}
 
-	payload := exp.getFormattedExportConfigs()
+	payload, err := exp.getFormattedExportConfigs()
+	if err != nil {
+		return err
+	}
 
 	err = websocket.Message.Send(exp.wsClient, payload)
 	if err != nil {
@@ -72,6 +76,10 @@ func (exp *Exporter) handleSocketConnection() error {
 		}
 
 		if err != nil {
+			if err.(*net.OpError).Err.Error() == "use of closed network connection" {
+				return nil
+			}
+
 			return err
 		}
 
@@ -126,6 +134,10 @@ func (exp *Exporter) checkExportError(data string) error {
 }
 
 func (exp *Exporter) onExportStateChanged(event ExportEvent) {
+	if event.CustomMsg == "Export done" {
+		exp.wsClient.Close()
+	}
+
 	exp.ExportStateChangeListener(event)
 }
 
@@ -133,8 +145,13 @@ func (exp *Exporter) onExportDone(bag []OutFileBag, err error) {
 	exp.ExportDoneListener(bag, err)
 }
 
-func (exp *Exporter) getFormattedExportConfigs() string {
-	return fmt.Sprintf("%s.%s<=:=>%s", "ExportManager", "export", exp.ExportConfig.GetFormattedConfigs())
+func (exp *Exporter) getFormattedExportConfigs() (string, error) {
+	formattedConfigs, err := exp.ExportConfig.GetFormattedConfigs()
+	if err != nil {
+		return "", err
+	}
+
+	return fmt.Sprintf("%s.%s<=:=>%s", "ExportManager", "export", formattedConfigs), nil
 }
 
 func warn(err error) {

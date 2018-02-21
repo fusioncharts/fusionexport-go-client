@@ -34,6 +34,9 @@
     "type": {
         "type": "string"
     },
+    "quality": {
+        "type": "string"
+    },
     "outputFileDefinition": {
         "type": "string"
     },
