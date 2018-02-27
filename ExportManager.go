@@ -20,7 +20,7 @@ func NewExportManager() ExportManager {
 	return em
 }
 
-func (em *ExportManager) setConnectionConfig(host string, port int) {
+func (em *ExportManager) SetConnectionConfig(host string, port int) {
 	em.Host = host
 	em.Port = port
 }
