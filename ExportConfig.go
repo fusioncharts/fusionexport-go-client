@@ -30,11 +30,11 @@ func NewExportConfig() ExportConfig {
 	config := ExportConfig{}
 	config.configs = make(map[string]interface{})
 
-	buffer, err := ioutil.ReadFile("metadata/fusionexport-typings.json")
+	buffer, err := Asset("metadata/fusionexport-typings.json")
 	warn(err)
 	json.Unmarshal(buffer, &config.typings)
 
-	buffer, err = ioutil.ReadFile("metadata/fusionexport-meta.json")
+	buffer, err = Asset("metadata/fusionexport-meta.json")
 	warn(err)
 	json.Unmarshal(buffer, &config.meta)
 
