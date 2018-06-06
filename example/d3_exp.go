@@ -1,4 +1,4 @@
-// Exporting the Output Files as Zip
+// D3 export
 
 package main
 
@@ -23,9 +23,9 @@ func main() {
 	// Instantiate ExportConfig and add the required configurations
 	exportConfig := FusionExport.NewExportConfig()
 
-	exportConfig.Set("chartConfig", "example/resources/multiple.json")
-	exportConfig.Set("exportFile", "go-export-<%= number(5) %>")
-	exportConfig.Set("exportAsZip", true)
+	exportConfig.Set("templateFilePath", "example/resources/template_d3.html")
+	exportConfig.Set("type", "pdf")
+	exportConfig.Set("asyncCapture", true)
 
 	// Instantiate ExportManager
 	exportManager := FusionExport.NewExportManager()

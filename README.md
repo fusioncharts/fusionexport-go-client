@@ -18,11 +18,7 @@ To require this into your project:
 import "github.com/fusioncharts/fusionexport-go-client"
 ```
 
-## API Reference
-
-You can find the full reference [here](https://www.fusioncharts.com/dev/exporting-charts/using-fusionexport/sdk-api-reference/golang.html).
-
-## Example
+## Getting Started
 
 Let’s start with a simple chart export. For exporting a single chart, save the chartConfig in a JSON file. The config should be inside an array.
 
@@ -32,50 +28,41 @@ Let’s start with a simple chart export. For exporting a single chart, save the
 package main
 
 import (
-    "io/ioutil"
-    "github.com/fusioncharts/fusionexport-go-client" // import the sdk
-    "fmt"
+	"fmt"
+
+	"github.com/fusioncharts/fusionexport-go-client"
 )
 
-func saveFiles(fileBag []FusionExport.OutFileBag) {
-    for _, file := range fileBag {
-        fmt.Println(file.RealName)
-        fileData, err := ioutil.ReadFile(file.TmpPath)
-        check(err)
-        err = ioutil.WriteFile(file.RealName, fileData, 0644)
-        check(err)
-    }
-}
-
 // Called when export is done
-func onDone (outFileBag []FusionExport.OutFileBag, err error) {
-    check(err)
-    saveFiles(outFileBag)
+func onDone(outFileBag []FusionExport.OutFileBag, err error) {
+	check(err)
+	FusionExport.SaveExportedFiles(outFileBag)
 }
 
 // Called on each export state change
-func onStateChange (event FusionExport.ExportEvent) {
-    fmt.Println("[" + event.Reporter + "] " + event.CustomMsg)
+func onStateChange(event FusionExport.ExportEvent) {
+	fmt.Println("[" + event.Reporter + "] " + event.CustomMsg)
 }
 
 func main() {
-    // Instantiate ExportConfig and add the required configurations
-    exportConfig := FusionExport.NewExportConfig()
+	// Instantiate ExportConfig and add the required configurations
+	exportConfig := FusionExport.NewExportConfig()
 
-    chartConfig, err := ioutil.ReadFile("single.json")
-    check(err)
-    exportConfig.Set("chartConfig", string(chartConfig))
+	exportConfig.Set("chartConfig", "example/resources/single.json")
 
-    // Instantiate ExportManager
-    exportManager := FusionExport.NewExportManager()
-    // Call the Export() method with the export config and the respective callbacks
-    exportManager.Export(exportConfig, onDone, onStateChange)
+	// Instantiate ExportManager
+	exportManager := FusionExport.NewExportManager()
+	// Call the Export() method with the export config and the respective callbacks
+	exportManager.Export(exportConfig, onDone, onStateChange)
 }
 
 func check(e error) {
-    if e != nil {
-        panic(e)
-    }
+	if e != nil {
+		panic(e)
+	}
 }
-
 ```
+
+## API Reference
+
+You can find the full reference [here](https://www.fusioncharts.com/dev/exporting-charts/using-fusionexport/sdk-api-reference/golang.html).

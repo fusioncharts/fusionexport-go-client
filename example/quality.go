@@ -1,4 +1,4 @@
-// Exporting the Output Files as Zip
+// Exporting a chart with best quality
 
 package main
 
@@ -23,9 +23,8 @@ func main() {
 	// Instantiate ExportConfig and add the required configurations
 	exportConfig := FusionExport.NewExportConfig()
 
-	exportConfig.Set("chartConfig", "example/resources/multiple.json")
-	exportConfig.Set("exportFile", "go-export-<%= number(5) %>")
-	exportConfig.Set("exportAsZip", true)
+	exportConfig.Set("chartConfig", "example/resources/single.json")
+	exportConfig.Set("quality", "best")
 
 	// Instantiate ExportManager
 	exportManager := FusionExport.NewExportManager()
