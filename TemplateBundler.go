@@ -174,7 +174,10 @@ func (tb *TemplateBundler) findHTMLResources() error {
 	}
 
 	for _, script := range scripts {
-		tb.collectedResources = append(tb.collectedResources, script.GetAttribute("src"))
+		src := strings.TrimSpace(script.GetAttribute("src"))
+		if len(src) > 0 {
+			tb.collectedResources = append(tb.collectedResources, script.GetAttribute("src"))
+		}
 	}
 
 	for _, img := range imgs {
@@ -384,6 +387,10 @@ func (tb *TemplateBundler) sanitizeBasePath() error {
 		tb.basePath = tb.parsedResources.BasePath
 	} else {
 		tb.basePath = findCommonPath(tb.collectedResources)
+	}
+
+	if len(strings.TrimSpace(tb.basePath)) == 0 {
+		return nil
 	}
 
 	bp, err := filepath.Abs(tb.basePath)

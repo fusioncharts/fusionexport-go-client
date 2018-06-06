@@ -23,7 +23,7 @@ func main() {
 	// Instantiate ExportConfig and add the required configurations
 	exportConfig := FusionExport.NewExportConfig()
 
-	exportConfig.Set("templateFilePath", "example/resources/template_d3.html")
+	exportConfig.Set("templateFilePath", "resources/template_d3.html")
 	exportConfig.Set("type", "pdf")
 	exportConfig.Set("asyncCapture", true)
 
